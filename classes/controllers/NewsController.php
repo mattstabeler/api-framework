@@ -22,6 +22,8 @@ class NewsController extends AbstractController
      */
     public function get($request)
     {
+
+        print_r($request->parameters);
         $articles = $this->readArticles();
         switch (count($request->url_elements)) {
             case 1:

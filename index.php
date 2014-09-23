@@ -6,6 +6,8 @@
  * @author  Martin Bean <martin@martinbean.co.uk>
  */
 
+require "config.php";
+
 /**
  * Generic class autoloader.
  * 
@@ -51,11 +53,16 @@ switch ($request->method) {
     break;
 }
 
+$request->headers = getallheaders();
+
 /**
  * Route the request.
  */
 if (!empty($request->url_elements)) {
+
+    // print_r($request->url_elements);
     $controller_name = ucfirst($request->url_elements[0]) . 'Controller';
+    
     if (class_exists($controller_name)) {
         $controller = new $controller_name;
         $action_name = strtolower($request->method);
@@ -73,5 +80,15 @@ else {
 /**
  * Send the response to the client.
  */
-$response_obj = Response::create($response_str, $_SERVER['HTTP_ACCEPT']);
+
+/** Always add this... */
+$headers = array(
+        "Access-Control-Allow-Origin"=>"*", 
+        "Access-Control-Allow-Credentials" => "true",
+        "X-FTA-Auth-Token" => "1234567896543657"
+        );
+
+$response_obj = Response::create($response_str, $_SERVER['HTTP_ACCEPT'], $headers);
+
+
 echo $response_obj->render();

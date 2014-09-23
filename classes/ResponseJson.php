@@ -5,7 +5,7 @@
  * @package api-framework
  * @author  Martin Bean <martin@martinbean.co.uk>
  */
-class ResponseJson
+class ResponseJson extends SimpleResponse
 {
     /**
      * Response data.
@@ -15,24 +15,14 @@ class ResponseJson
     protected $data;
     
     /**
-     * Constructor.
-     *
-     * @param string $data
-     */
-    public function __construct($data)
-    {
-        $this->data = $data;
-        return $this;
-    }
-    
-    /**
      * Render the response as JSON.
      * 
      * @return string
      */
     public function render()
     {
-        header('Content-Type: application/json');
+        $this->set_header("Content-Type", 'application/json');
+        $this->send_headers();
         return json_encode($this->data);
     }
 }

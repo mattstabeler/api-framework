@@ -27,4 +27,7 @@ class Request
      * @var array
      */
     public $parameters;
+
+    public $headers;
+
 }
